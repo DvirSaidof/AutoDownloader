@@ -12,3 +12,5 @@ urllib3==1.26.12
 parse-torrent-name
 oauth2client
 pyOpenSSL
+google-auth
+gspread
