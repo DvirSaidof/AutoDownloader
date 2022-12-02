@@ -5,9 +5,9 @@ The Web interface I used is google sheet, therefore setting a Google Sheet API k
 
 
 
-**Prerequisties:
+**Prerequisties:**
 
-  OpenSubtitles Api Key:**
+  OpenSubtitles Api Key:
   
     1. Register in https://www.opensubtitles.com/en/home
     2. Go to https://www.opensubtitles.com/en/consumers and create Api Key
