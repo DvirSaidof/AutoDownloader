@@ -10,10 +10,14 @@ The Web interface I used is google sheet, therefore setting a Google Sheet API k
   **OpenSubtitles Api Key:**
   
     1. Register in https://www.opensubtitles.com/en/home
-    2. Go to https://www.opensubtitles.com/en/consumers and create Api Key
-    ![opensub_example](https://user-images.githubusercontent.com/34963960/205312618-0818d47d-b564-48aa-897b-8824055c902c.PNG)
-    ![opensubs_example2](https://user-images.githubusercontent.com/34963960/205312657-3f6e7ffa-e61f-4624-9200-2cf37facd5bc.PNG)
-    Save the key.
+    2. Go to https://www.opensubtitles.com/en/consumers and create Api Key.
+    
+    ![opensub_example](https://user-images.githubusercontent.com/34963960/205314076-445fe646-c8e9-48c6-869c-02d2b199e6d7.PNG)
+
+    ![opensubs_example2](https://user-images.githubusercontent.com/34963960/205314085-e6f42298-ea88-410a-8877-9fe6fe5c825b.PNG)
+
+
+    3. Save the key.
 
   **UTorrentWeb:**
 
