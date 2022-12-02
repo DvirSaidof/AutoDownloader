@@ -21,7 +21,9 @@ The Web interface I used is google sheet, therefore setting a Google Sheet API k
    ![utorrentweb1](https://user-images.githubusercontent.com/34963960/205316252-8e329d83-0135-4670-9420-579ea90cefe9.png)
 
     3. Disable "Show add torrent dialog"
-    ![image](https://user-images.githubusercontent.com/34963960/205315357-a5773e62-7396-43cc-83f2-6c753bb74c1b.png)
+    
+    ![utorrentweb2](https://user-images.githubusercontent.com/34963960/205316376-3c7fe307-4bb0-4b8d-b4ef-184aca0e8496.png)
+
 
 **Steps to run the app:**
 
