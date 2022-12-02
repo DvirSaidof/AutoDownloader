@@ -7,7 +7,7 @@ The Web interface I used is google sheet, therefore setting a Google Sheet API k
 
 **Prerequisties:**
 
-  OpenSubtitles Api Key:
+  **OpenSubtitles Api Key:**
   
     1. Register in https://www.opensubtitles.com/en/home
     2. Go to https://www.opensubtitles.com/en/consumers and create Api Key
@@ -15,10 +15,10 @@ The Web interface I used is google sheet, therefore setting a Google Sheet API k
     ![opensubs_example2](https://user-images.githubusercontent.com/34963960/205312657-3f6e7ffa-e61f-4624-9200-2cf37facd5bc.PNG)
     Save the key.
 
-  UTorrentWeb:
+  **UTorrentWeb:**
 
 
-Steps to run the app:
+**Steps to run the app:**
 
 1. git clone https://github.com/DvirSaidof/AutoDownloader.git
 2. pip install -r requirements.txt
