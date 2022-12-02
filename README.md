@@ -41,7 +41,8 @@ The Web interface I used is google sheet, therefore setting a Google Sheet API k
     9. Go to KEYS section and add a new key. This will download a credentials json file.
      
    ![googleshit2](https://user-images.githubusercontent.com/34963960/205337156-9c0420c7-f218-4d30-a3d6-6a1bdcd31813.png) 
-   10. Open a google sheet and share it with the email generated for ur google service account.
+   
+    10. Open a google sheet and share it with the email generated for ur google service account.
 
 **Steps to run the app:**
 
