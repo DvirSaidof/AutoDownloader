@@ -49,24 +49,3 @@ The Web interface I used is google sheet, therefore setting a Google Sheet API k
 2. pip install -r requirements.txt
 3. change config.json.sample to config.json and fill all the empty values with the api keys generated in the prerequisites.
 
-{
-  "user_preferences": {
-    "language": ["English"], # Your prefered subtitles language
-    "folder": "" # Subtitles will be downloaded to this folder 
-  },
-  "google_credentials": { # Your google credentials
-    "type": "",
-    "project_id": "",
-    "private_key_id": "",
-    "private_key": "",
-    "client_email": "",
-    "client_id": "",
-    "auth_uri": "",
-    "token_uri": "",
-    "auth_provider_x509_cert_url": "",
-    "client_x509_cert_url": ""
-  },
-  "opensubtitles_credentials": { # Your open subtitles api key
-    "api_key": ""
-  }
-}
