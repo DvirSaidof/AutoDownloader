@@ -27,20 +27,20 @@ The Web interface I used is google sheet, therefore setting a Google Sheet API k
 
    **Google Sheet Api Key**
    
-     1. Sign in to the Google Cloud console - https://console.developers.google.com/
-     2. Select your Google's project (or create a new one)
-     3. Search for the Google Sheets API and enable it
-     4. On the main menu, select "APIs & Services" then "Credentials"
-     5. Now create credentials with the "OAuth client ID" method
-     6. Click on "Create"
-     7. Go to service account
-     8. Click on the email
+    1. Sign in to the Google Cloud console - https://console.developers.google.com/
+    2. Select your Google's project (or create a new one)
+    3. Search for the Google Sheets API and enable it
+    4. On the main menu, select "APIs & Services" then "Credentials"
+    5. Now create credentials with the "OAuth client ID" method
+    6. Click on "Create"
+    7. Go to service account
+    8. Click on the email
      
-     ![googleshit1](https://user-images.githubusercontent.com/34963960/205336584-71aa0c3c-9112-4e05-8412-098b0f31314b.png)
+   ![googleshit1](https://user-images.githubusercontent.com/34963960/205336584-71aa0c3c-9112-4e05-8412-098b0f31314b.png)
      
-     9. Go to KEYS section and create a new key. This will download a credentials json file.
+    9. Go to KEYS section and create a new key. This will download a credentials json file.
      
-     ![googleshit2](https://user-images.githubusercontent.com/34963960/205337156-9c0420c7-f218-4d30-a3d6-6a1bdcd31813.png) 
+   ![googleshit2](https://user-images.githubusercontent.com/34963960/205337156-9c0420c7-f218-4d30-a3d6-6a1bdcd31813.png) 
 
 **Steps to run the app:**
 
