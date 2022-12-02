@@ -11,16 +11,15 @@ The Web interface I used is google sheet, therefore setting a Google Sheet API k
   
     1. Register in https://www.opensubtitles.com/en/home
     2. Go to https://www.opensubtitles.com/en/consumers and create Api Key.
-    
-    ![opensub_example](https://user-images.githubusercontent.com/34963960/205314076-445fe646-c8e9-48c6-869c-02d2b199e6d7.PNG)
-
-    ![opensubs_example2](https://user-images.githubusercontent.com/34963960/205314085-e6f42298-ea88-410a-8877-9fe6fe5c825b.PNG)
-
-
     3. Save the key.
 
   **UTorrentWeb:**
+    1. Download and install UTorrentWeb
+    2. Go to Settings in the upper right corner.
+    ![image](https://user-images.githubusercontent.com/34963960/205315168-f8166a7e-b130-42f0-a389-a673363340fa.png)
 
+    3. Disable "Show add torrent dialog"
+    ![image](https://user-images.githubusercontent.com/34963960/205315357-a5773e62-7396-43cc-83f2-6c753bb74c1b.png)
 
 **Steps to run the app:**
 
