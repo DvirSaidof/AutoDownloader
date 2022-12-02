@@ -14,9 +14,11 @@ The Web interface I used is google sheet, therefore setting a Google Sheet API k
     3. Save the key.
 
   **UTorrentWeb:**
+  
     1. Download and install UTorrentWeb
     2. Go to Settings in the upper right corner.
-    ![image](https://user-images.githubusercontent.com/34963960/205315168-f8166a7e-b130-42f0-a389-a673363340fa.png)
+    
+   ![utorrentweb1](https://user-images.githubusercontent.com/34963960/205316252-8e329d83-0135-4670-9420-579ea90cefe9.png)
 
     3. Disable "Show add torrent dialog"
     ![image](https://user-images.githubusercontent.com/34963960/205315357-a5773e62-7396-43cc-83f2-6c753bb74c1b.png)
