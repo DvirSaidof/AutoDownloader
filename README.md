@@ -43,7 +43,7 @@ The Web interface I used is google sheet, therefore setting a Google Sheet API k
    ![googleshit2](https://user-images.githubusercontent.com/34963960/205337156-9c0420c7-f218-4d30-a3d6-6a1bdcd31813.png) 
    
     10. Open a google sheet and share it with the email generated for ur google service account.
-    Google sheet should have 2 sheets
+    Google sheet should have 2 sheets that look like that
    ![image](https://user-images.githubusercontent.com/34963960/205352698-8ec30411-6450-4f1c-8f54-1877f04c5c3a.png)
 
 
