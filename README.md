@@ -38,7 +38,7 @@ The Web interface I used is google sheet, therefore setting a Google Sheet API k
      
    ![googleshit1](https://user-images.githubusercontent.com/34963960/205336584-71aa0c3c-9112-4e05-8412-098b0f31314b.png)
      
-    9. Go to KEYS section and create a new key. This will download a credentials json file.
+    9. Go to KEYS section and add a new key. This will download a credentials json file.
      
    ![googleshit2](https://user-images.githubusercontent.com/34963960/205337156-9c0420c7-f218-4d30-a3d6-6a1bdcd31813.png) 
 
