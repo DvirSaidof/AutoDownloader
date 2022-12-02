@@ -1,5 +1,6 @@
 *.log
 *config.py
 *venv
-.creds
 *cred
+config.json
+google_creds.json

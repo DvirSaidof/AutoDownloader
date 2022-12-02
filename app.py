@@ -35,14 +35,14 @@ class AutoDownloadApp:
     def __init__(self, credentials):
         with open(credentials) as f:
             self.credentials = json.loads(f.read())
-        with open(".creds/google_creds.json", "w") as outfile:
+        with open("config/google_creds.json", "w") as outfile:
             json.dump(self.credentials.get('google_credentials'), outfile)
         self.torrents_list = []
         self.film_name = None
         self.torrents_options = dict()
         self.torrents = []
         self.torrent_selected = None
-        self.google_credentials = ".creds/google_creds.json"
+        self.google_credentials = "config/google_creds.json"
         self.opensubtitles_key = self.credentials.get('opensubtitles_credentials').get('api_key')
         self.folder = self.credentials.get('user_preferences').get('folder')
         self.language_preferences = self.credentials.get('user_preferences').get('language')[0]
@@ -90,7 +90,7 @@ class AutoDownloadApp:
             for i in range(2, 12):
                 worksheet.update(f'A{i}', i - 1)
         except FileNotFoundError as e:
-            print(f"Credentials file .creds/google_credentials.json is missing. {e}")
+            print(f"Credentials file config/google_credentials.json is missing. {e}")
             raise
         except RefreshError as e:
             print(f"client_email value is wrong. {e}")
@@ -127,7 +127,7 @@ class AutoDownloadApp:
                 sheet = client.open("AutoDownloadApp").sheet1
                 self.film_name = sheet.cell(2, 1).value
         except FileNotFoundError as e:
-            print(f"Credentials file .creds/google_credentials.json is missing. {e}")
+            print(f"Credentials file config/google_credentials.json is missing. {e}")
             raise
         except RefreshError as e:
             print(f"client_email value is wrong. {e}")
@@ -148,7 +148,7 @@ class AutoDownloadApp:
     #         with GoogleConnection(self.google_credentials) as client:
     #             func()
     #     except FileNotFoundError as e:
-    #         print(f"Credentials file .creds/google_credentials.json is missing. {e}")
+    #         print(f"Credentials file config/google_credentials.json is missing. {e}")
     #         raise
     #     except RefreshError as e:
     #         print(f"client_email value is wrong. {e}")
@@ -182,7 +182,7 @@ class AutoDownloadApp:
                                                         f"seconds has passed.")
                 return int(user_selection) - 1
         except FileNotFoundError as e:
-            print(f"Credentials file .creds/google_credentials.json is missing. {e}")
+            print(f"Credentials file config/google_credentials.json is missing. {e}")
             self.clear_sheets()
             raise
         except RefreshError as e:
@@ -292,4 +292,4 @@ class UserInputTimeOutException(TimeoutError):
 
 
 if __name__ == "__main__":
-    run(".creds/credentials.json")
+    run("config/config.json")

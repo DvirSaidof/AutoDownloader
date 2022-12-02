@@ -1,0 +1,21 @@
+{
+  "user_preferences": {
+    "language": ["English"], # Your prefered subtitles language
+    "folder": "" # Subtitles will be downloaded to this folder
+  },
+  "google_credentials": { # Your google credentials
+    "type": "",
+    "project_id": "",
+    "private_key_id": "",
+    "private_key": "",
+    "client_email": "",
+    "client_id": "",
+    "auth_uri": "",
+    "token_uri": "",
+    "auth_provider_x509_cert_url": "",
+    "client_x509_cert_url": ""
+  },
+  "opensubtitles_credentials": {
+    "api_key": ""  # Your open subtitles api key
+  }
+}
