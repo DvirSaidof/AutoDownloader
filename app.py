@@ -7,7 +7,7 @@ from gspread.exceptions import SpreadsheetNotFound, WorksheetNotFound
 import time
 import json
 
-from pages.subtitles import Subtitles, SubtitlesNotFoundException
+from pages.subtitles import Subtitles, SubtitlesNotFoundException, DestinationFolderNotFoundException
 from utils.google_connect import GoogleConnection
 from pages.pb_torrents_page import SearchTorrentPirateBay
 from parsers.pb_torrent_parser import PirateBayFilmTorrent
@@ -222,9 +222,10 @@ class AutoDownloadApp:
             self.torrent_selected = self.torrents[user_selection]
             self.logger.debug(f"User selected: {user_selection}")
             self.download_movie(self.torrent_selected)
-            msg = f"Finished downloading {self.torrent_selected}"
+            msg = f"Downloading {self.torrent_selected}..."
             print(msg)
             self.logger.debug(msg)
+            time.sleep(20)
             subs = Subtitles(self.opensubtitles_key)
             year = str(self.torrent_selected.year) if self.torrent_selected.year else None
             # {'year': 1976, 'resolution': '720p', 'quality': 'BrRip', 'codec': 'x264', 'title': 'Rocky', 'group': 'YIFY', 'excess': '750MB'}
@@ -239,14 +240,15 @@ class AutoDownloadApp:
                                                 excess=self.torrent_selected.excess,
                                                 )
                 subs.download_subs(file_name=self.torrent_selected.torrent_name,
+                                   film_name_short=film_name,
                                    file_id=subs_file_id,
-                                   folder=self.folder)
-            except SubtitlesNotFoundException:
-                msg = "Couldn't find subtitles for the desired movie. exiting"
-                print(msg)
-                self.logger.error(msg)
-
-            # subs.download_subs(subs_url, self.folder_preferences)
+                                   base_folder=self.folder)
+            except SubtitlesNotFoundException as e:
+                print(e)
+                self.logger.error(e)
+            except DestinationFolderNotFoundException as e:
+                print(e)
+                self.logger.error(e)
 
         else:
             msg = "No movie was found"

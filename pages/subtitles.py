@@ -1,8 +1,8 @@
 import webbrowser
 import requests
 import json
-
-#from auto_downloader.constants import SubtitlesConstants
+import os
+import pathlib
 from constants import SubtitlesConstants
 
 
@@ -13,6 +13,7 @@ class Subtitles:
     """
     DL_URL = "https://api.opensubtitles.com/api/v1/download/"
     SEARCH_URL = "https://api.opensubtitles.com/api/v1/subtitles/"
+    FILE_TYPES = ("mkv", "mp4", "avi")
 
     def __init__(self, api_key):
         self.header = {
@@ -75,23 +76,55 @@ class Subtitles:
                 mm_file_id = file_id
 
         if not mm_file_id:
-            raise SubtitlesNotFoundException(f"Couldn't find subtitles for the title: {title}")
+            raise SubtitlesNotFoundException(f"Couldn't find subtitles for the movie: {title}")
         print(f"Found subtitles! will return {movie_attr.get('files')[0].get('file_name')}")
         return mm_file_id
 
-    def download_subs(self, file_name, file_id, folder):
+    def get_dl_file_folder_path(self, base_folder, film_name_short):
+        file_path = pathlib.Path(base_folder)
+        #p = rd.resolve()
+
+        film_name_short_first_vers = film_name_short.join(".")
+
+        for td in file_path.glob("*"):
+            if td.is_dir() and \
+                    (film_name_short_first_vers.lower() in td.name.lower() or film_name_short.lower() in td.name.lower()):
+                return base_folder + "/" + td.name
+
+    def get_dl_file_name(self, movie_folder):
+        file_path = pathlib.Path(movie_folder)
+
+        for td in file_path.glob("*"):
+            # if td.is_file() and \
+            #         any(file_type for file_type in self.FILE_TYPES if file_type in td.name):
+            if td.is_file() and td.name.endswith(tuple(self.FILE_TYPES)):
+                return td.name[:-4]
+
+    def download_subs(self, file_name, film_name_short, file_id, base_folder):
         data = {
             "file_id": file_id
         }
+
         response = requests.post(self.DL_URL, headers=self.header, json=data)
         response_json = json.loads(response.content)
         dl_url = response_json.get("link")
         response = requests.get(dl_url)
-        print(f"Download {file_name} to {folder}/{file_name}.srt")
-        with open(folder + f"/{file_name}.srt", 'wb') as f:
-            f.write(response.content)
 
+        try:
+            movie_folder = self.get_dl_file_folder_path(base_folder, film_name_short)
+            print(f"Movie folder is: {movie_folder}")
+
+            movie_name = self.get_dl_file_name(movie_folder)
+            print(f"Movie file name is: {movie_name}")
+
+            print(f"Download {movie_name}.srt to {movie_folder}/{movie_name}.srt")
+            with open(f"{movie_folder}/{movie_name}.srt", 'wb') as f:
+                f.write(response.content)
+        except FileNotFoundError as e:
+            raise DestinationFolderNotFoundException(f"Movie destination folder for {file_name} was not found.\n {e}")
 
 class SubtitlesNotFoundException(FileNotFoundError):
     """Custom Exception"""
 
+class DestinationFolderNotFoundException(FileNotFoundError):
+    """Custom Exception"""
