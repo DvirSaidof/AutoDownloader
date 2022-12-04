@@ -4,7 +4,7 @@ import json
 import os
 import pathlib
 from constants import SubtitlesConstants
-
+from pathlib import Path
 
 class Subtitles:
     """
@@ -13,7 +13,8 @@ class Subtitles:
     """
     DL_URL = "https://api.opensubtitles.com/api/v1/download/"
     SEARCH_URL = "https://api.opensubtitles.com/api/v1/subtitles/"
-    FILE_TYPES = ("mkv", "mp4", "avi")
+    FILE_TYPES = ('.m1v', '.mpeg', '.mov', '.qt', '.mpa', '.mpg', '.mpe', '.avi', '.movie', '.mp4')
+
 
     def __init__(self, api_key):
         self.header = {
@@ -95,10 +96,8 @@ class Subtitles:
         file_path = pathlib.Path(movie_folder)
 
         for td in file_path.glob("*"):
-            # if td.is_file() and \
-            #         any(file_type for file_type in self.FILE_TYPES if file_type in td.name):
             if td.is_file() and td.name.endswith(tuple(self.FILE_TYPES)):
-                return td.name[:-4]
+                return Path(f'{movie_folder}/{td.name}').stem # This will return the movie name found without it's video extension
 
     def download_subs(self, file_name, film_name_short, file_id, base_folder):
         data = {
