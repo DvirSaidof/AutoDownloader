@@ -32,7 +32,7 @@ class AutoDownloadApp:
     TITLE_CELLS = {'A1': 'Select', 'B1': 'Type', 'C1': 'Name', 'D1': 'Size', 'E1': 'Seeders', 'F1': 'Leechers'}
     MAX_NUM_OF_TORRENTS = 11
     SLEEP_TIME_AFTER_DL_START = 20
-    GOOGLE_SHEET_UI_SLEEP = 10
+    GOOGLE_SHEET_UI_SLEEP = 30
 
     def __init__(self, credentials):
         with open(credentials) as f:
