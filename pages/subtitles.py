@@ -39,6 +39,7 @@ class Subtitles:
         :param excess: 750MB
         :return: file_id
         """
+        print(f"Searching for {title} Subtitles")
         mm_file_id = None
         search_query = f"{self.SEARCH_URL}?languages={SubtitlesConstants.LANGUAGES_CODES.get(lang)}&query={title}"
         if year:
@@ -82,24 +83,60 @@ class Subtitles:
         return mm_file_id
 
     def get_dl_file_folder_path(self, base_folder, film_name_short):
-        file_path = pathlib.Path(base_folder)
-        #p = rd.resolve()
+        print(f"Trying to find {film_name_short}  Folder inside {base_folder}")
 
-        film_name_short_first_vers = film_name_short.join(".")
+        file_path = pathlib.Path(base_folder)
+        film_name_short_first_vers = film_name_short.replace(" ", ".")
 
         for td in file_path.glob("*"):
+            print(td.name)
             if td.is_dir() and \
                     (film_name_short_first_vers.lower() in td.name.lower() or film_name_short.lower() in td.name.lower()):
                 return base_folder + "/" + td.name
+        else:
+            raise MovieFolderNotFound(f"The movie's: {film_name_short} folder wasn't found in: {base_folder}")
 
-    def get_dl_file_name(self, movie_folder):
+    def get_dl_file_name(self, movie_folder: str, film_name_short: str):
+        print(f"Trying to find {film_name_short} movie inside {movie_folder}")
+
         file_path = pathlib.Path(movie_folder)
+        film_name_short_first_vers = film_name_short.replace(" ", ".")
 
         for td in file_path.glob("*"):
-            if td.is_file() and td.name.endswith(tuple(self.FILE_TYPES)):
-                return Path(f'{movie_folder}/{td.name}').stem # This will return the movie name found without it's video extension
+            if td.is_file() and td.name.endswith(tuple(self.FILE_TYPES)) \
+                    and (film_name_short_first_vers.lower() in td.name.lower() or film_name_short.lower() in td.name.lower()):
+                        return Path(f'{movie_folder}/{td.name}').stem # This will return the movie name found without it's video extension
+        else:
+            return False
 
-    def download_subs(self, file_name, film_name_short, file_id, base_folder):
+    def create_new_folder(self, parent_dir, new_folder):
+        print(f"Creating new directoy {parent_dir}/{new_folder}")
+        try:
+            path = os.path.join(parent_dir, new_folder)
+            os.mkdir(path)
+        except OSError as error:
+            print(error)
+            raise OSError(f"Couldn't create new directory {new_folder}. in {parent_dir}")
+
+    def move_movie_to_folder(self, movie_to_move, current_folder, dest_folder):
+        print(f"Changing {movie_to_move} directory to {dest_folder}/{movie_to_move}")
+        os.chdir(current_folder)
+        cwd = os.getcwd()  # Get the current working directory (cwd)
+        files = os.listdir(cwd)  # Get all the files in that directory
+        try:
+            os.rename(f"{movie_to_move}.mp4", f"{dest_folder}/{movie_to_move}")
+        except OSError as error:
+            print(error)
+            raise OSError(f"Failed to move {current_folder}/{movie_to_move} to {dest_folder}/{movie_to_move}")
+
+    def creating_subs_file(self, content, movie_name, movie_folder):
+        print(f"Download {movie_name}.srt to {movie_folder}/{movie_name}.srt")
+        with open(f"{movie_folder}/{movie_name}.srt", 'wb') as f:
+            f.write(content)
+
+    def download_subs(self, file_name: str, film_name_short: str, file_id, base_folder: str):
+        print(f"Downloading {file_name} Subtitles")
+
         data = {
             "file_id": file_id
         }
@@ -112,13 +149,23 @@ class Subtitles:
         try:
             movie_folder = self.get_dl_file_folder_path(base_folder, film_name_short)
             print(f"Movie folder is: {movie_folder}")
-
-            movie_name = self.get_dl_file_name(movie_folder)
+        except MovieFolderNotFound as e:
+            print(e)
+            movie_folder = base_folder
+            # movie_name = self.get_dl_file_name(base_folder, film_name_short)
+            # if not movie_name:
+            #     raise MovieFolderNotFound("The movie folder wasn't found. Probably the download didn't start")
+            # else:
+            #     print(f"Movie file name is: {movie_name}")
+            #     new_folder = movie_name
+            #     self.create_new_folder(base_folder, new_folder)
+            #     self.move_movie_to_folder(movie_name, base_folder, new_folder)
+            #     self.creating_subs_file(response.content, movie_name, f'{base_folder}/{new_folder}')
+            #     return
+        try:
+            movie_name = self.get_dl_file_name(movie_folder, film_name_short)
             print(f"Movie file name is: {movie_name}")
-
-            print(f"Download {movie_name}.srt to {movie_folder}/{movie_name}.srt")
-            with open(f"{movie_folder}/{movie_name}.srt", 'wb') as f:
-                f.write(response.content)
+            self.creating_subs_file(response.content, movie_name, movie_folder)
         except FileNotFoundError as e:
             raise DestinationFolderNotFoundException(f"Movie destination folder for {file_name} was not found.\n {e}")
 
@@ -127,3 +174,7 @@ class SubtitlesNotFoundException(FileNotFoundError):
 
 class DestinationFolderNotFoundException(FileNotFoundError):
     """Custom Exception"""
+
+class MovieFolderNotFound(FileNotFoundError):
+    """Custom Exception"""
+

@@ -31,6 +31,8 @@ class AutoDownloadApp:
 
     TITLE_CELLS = {'A1': 'Select', 'B1': 'Type', 'C1': 'Name', 'D1': 'Size', 'E1': 'Seeders', 'F1': 'Leechers'}
     MAX_NUM_OF_TORRENTS = 11
+    SLEEP_TIME_AFTER_DL_START = 20
+    GOOGLE_SHEET_UI_SLEEP = 10
 
     def __init__(self, credentials):
         with open(credentials) as f:
@@ -173,7 +175,7 @@ class AutoDownloadApp:
                     print(msg)
                     self.logger.debug(msg)
 
-                    time.sleep(10)
+                    time.sleep(self.GOOGLE_SHEET_UI_SLEEP)
                     sheet = client.open("AutoDownloadApp")
                     data = sheet.get_worksheet(0)
                     user_selection = data.cell(2, 3).value
@@ -225,7 +227,7 @@ class AutoDownloadApp:
             msg = f"Downloading {self.torrent_selected}..."
             print(msg)
             self.logger.debug(msg)
-            time.sleep(20)
+            time.sleep(self.SLEEP_TIME_AFTER_DL_START)
             subs = Subtitles(self.opensubtitles_key)
             year = str(self.torrent_selected.year) if self.torrent_selected.year else None
             # {'year': 1976, 'resolution': '720p', 'quality': 'BrRip', 'codec': 'x264', 'title': 'Rocky', 'group': 'YIFY', 'excess': '750MB'}
@@ -249,13 +251,16 @@ class AutoDownloadApp:
             except DestinationFolderNotFoundException as e:
                 print(e)
                 self.logger.error(e)
-
+            except Exception as e:
+                print(e)
+                self.logger.error(e)
         else:
             msg = "No movie was found"
             print(msg)
             self.logger.debug(msg)
 
     def download_movie(self, torrent: PirateBayFilmTorrent):
+        print(f"The following torrent will be downloaded: {torrent}")
         self.logger.debug(f"The following torrent will be downloaded: {torrent}")
         webbrowser.open(torrent.magnet_link)
 
@@ -271,9 +276,12 @@ class AutoDownloadApp:
 
 def run(credentials):
     while True:
-        logging.info("Program is running and searching for a search input")
-        print("Program is running and searching for a search input")
-        time.sleep(10)
+        msg = "Program is running and searching for a search input"
+        logging.info(msg)
+        print(msg)
+
+        time.sleep(AutoDownloadApp.GOOGLE_SHEET_UI_SLEEP)
+
         ad_client = AutoDownloadApp(credentials)
         with GoogleConnection(ad_client.google_credentials) as client:
             sheet = client.open("AutoDownloadApp")
@@ -281,9 +289,15 @@ def run(credentials):
             film_name = input_sheet.cell(2, 1).value
             if film_name:
                 print(f"Will search and download {film_name}")
-                ad_client.google_sheet_interactive(film_name)
-                ad_client.clear_sheets()
-
+                try:
+                    ad_client.google_sheet_interactive(film_name)
+                except Exception as e:
+                    msg = "There was an Error during "
+                    logging.info(msg)
+                    print(msg)
+                    time.sleep(AutoDownloadApp.GOOGLE_SHEET_UI_SLEEP)
+                finally:
+                    ad_client.clear_sheets()
 
 class UserInputTimeOutException(TimeoutError):
     """
@@ -291,7 +305,6 @@ class UserInputTimeOutException(TimeoutError):
     """
     TIMEOUT = 300
     pass
-
 
 if __name__ == "__main__":
     run("config/config.json")
