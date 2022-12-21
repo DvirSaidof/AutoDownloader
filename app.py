@@ -30,9 +30,9 @@ class AutoDownloadApp:
     """
 
     TITLE_CELLS = {'A1': 'Select', 'B1': 'Type', 'C1': 'Name', 'D1': 'Size', 'E1': 'Seeders', 'F1': 'Leechers'}
-    MAX_NUM_OF_TORRENTS = 11
-    SLEEP_TIME_AFTER_DL_START = 20
-    GOOGLE_SHEET_UI_SLEEP = 30
+    MAX_NUM_OF_TORRENTS = 15
+    SLEEP_TIME_AFTER_DL_START = 30
+    GOOGLE_SHEET_UI_SLEEP = 10
 
     def __init__(self, credentials):
         with open(credentials) as f:
@@ -47,7 +47,7 @@ class AutoDownloadApp:
         self.google_credentials = "config/google_creds.json"
         self.opensubtitles_key = self.credentials.get('opensubtitles_credentials').get('api_key')
         self.folder = self.credentials.get('user_preferences').get('folder')
-        self.language_preferences = self.credentials.get('user_preferences').get('language')[0]
+        self.language_preferences = self.credentials.get('user_preferences').get('language')
         self._get_film_to_dl_from_google_sheet()
         self.logger = logging.getLogger("app.AutoDownloadApp")
 
@@ -231,29 +231,31 @@ class AutoDownloadApp:
             subs = Subtitles(self.opensubtitles_key)
             year = str(self.torrent_selected.year) if self.torrent_selected.year else None
             # {'year': 1976, 'resolution': '720p', 'quality': 'BrRip', 'codec': 'x264', 'title': 'Rocky', 'group': 'YIFY', 'excess': '750MB'}
-            try:
-                subs_file_id = subs.search_subs(lang=self.language_preferences,
-                                                year=year,
-                                                resolution=self.torrent_selected.resolution,
-                                                quality=self.torrent_selected.quality,
-                                                codec=self.torrent_selected.codec,
-                                                title=self.torrent_selected.movie_name,
-                                                group=self.torrent_selected.group,
-                                                excess=self.torrent_selected.excess,
-                                                )
-                subs.download_subs(file_name=self.torrent_selected.torrent_name,
-                                   film_name_short=film_name,
-                                   file_id=subs_file_id,
-                                   base_folder=self.folder)
-            except SubtitlesNotFoundException as e:
-                print(e)
-                self.logger.error(e)
-            except DestinationFolderNotFoundException as e:
-                print(e)
-                self.logger.error(e)
-            except Exception as e:
-                print(e)
-                self.logger.error(e)
+            for lang in self.language_preferences:
+                try:
+                    subs_file_id = subs.search_subs(lang=lang,
+                                                    year=year,
+                                                    resolution=self.torrent_selected.resolution,
+                                                    quality=self.torrent_selected.quality,
+                                                    codec=self.torrent_selected.codec,
+                                                    title=self.torrent_selected.movie_name,
+                                                    group=self.torrent_selected.group,
+                                                    excess=self.torrent_selected.excess,
+                                                    )
+                    subs.download_subs(lang=lang,
+                                       file_name=self.torrent_selected.torrent_name,
+                                       film_name_short=film_name,
+                                       file_id=subs_file_id,
+                                       base_folder=self.folder)
+                except SubtitlesNotFoundException as e:
+                    print(e)
+                    self.logger.error(e)
+                except DestinationFolderNotFoundException as e:
+                    print(e)
+                    self.logger.error(e)
+                except Exception as e:
+                    print(e)
+                    self.logger.error(e)
         else:
             msg = "No movie was found"
             print(msg)

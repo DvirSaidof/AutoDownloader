@@ -3,6 +3,7 @@ import requests
 import json
 import os
 import pathlib
+import sys
 from constants import SubtitlesConstants
 from pathlib import Path
 
@@ -22,6 +23,9 @@ class Subtitles:
             'Api-Key': api_key
         }
         self.most_matches = dict()
+        self.path_divider = "/"
+        if sys.platform.startswith("win"):
+            self.path_divider = "\\"
 
     def _parse_movie_name(self, file_name):
         pass
@@ -92,7 +96,7 @@ class Subtitles:
             print(td.name)
             if td.is_dir() and \
                     (film_name_short_first_vers.lower() in td.name.lower() or film_name_short.lower() in td.name.lower()):
-                return base_folder + "/" + td.name
+                return base_folder + self.path_divider + td.name
         else:
             raise MovieFolderNotFound(f"The movie's: {film_name_short} folder wasn't found in: {base_folder}")
 
@@ -105,12 +109,12 @@ class Subtitles:
         for td in file_path.glob("*"):
             if td.is_file() and td.name.endswith(tuple(self.FILE_TYPES)) \
                     and (film_name_short_first_vers.lower() in td.name.lower() or film_name_short.lower() in td.name.lower()):
-                        return Path(f'{movie_folder}/{td.name}').stem # This will return the movie name found without it's video extension
+                        return Path(f'{movie_folder}{self.path_divider}{td.name}').stem # This will return the movie name found without it's video extension
         else:
             return False
 
     def create_new_folder(self, parent_dir, new_folder):
-        print(f"Creating new directoy {parent_dir}/{new_folder}")
+        print(f"Creating new directoy {parent_dir}{self.path_divider}{new_folder}")
         try:
             path = os.path.join(parent_dir, new_folder)
             os.mkdir(path)
@@ -119,22 +123,26 @@ class Subtitles:
             raise OSError(f"Couldn't create new directory {new_folder}. in {parent_dir}")
 
     def move_movie_to_folder(self, movie_to_move, current_folder, dest_folder):
-        print(f"Changing {movie_to_move} directory to {dest_folder}/{movie_to_move}")
+        print(f"Changing {movie_to_move} directory to {dest_folder}{self.path_divider}{movie_to_move}")
         os.chdir(current_folder)
         cwd = os.getcwd()  # Get the current working directory (cwd)
         files = os.listdir(cwd)  # Get all the files in that directory
         try:
-            os.rename(f"{movie_to_move}.mp4", f"{dest_folder}/{movie_to_move}")
+            os.rename(f"{movie_to_move}.mp4", f"{dest_folder}{self.path_divider}{movie_to_move}")
         except OSError as error:
             print(error)
-            raise OSError(f"Failed to move {current_folder}/{movie_to_move} to {dest_folder}/{movie_to_move}")
+            raise OSError(f"Failed to move {current_folder}{self.path_divider}{movie_to_move} to {dest_folder}{self.path_divider}{movie_to_move}")
 
-    def creating_subs_file(self, content, movie_name, movie_folder):
-        print(f"Download {movie_name}.srt to {movie_folder}/{movie_name}.srt")
-        with open(f"{movie_folder}/{movie_name}.srt", 'wb') as f:
+    def creating_subs_file(self, content, movie_name, movie_folder, lang):
+        print(f"Download {movie_name}.srt to {movie_folder}{self.path_divider}{movie_name}.srt")
+        with open(f"{movie_folder}{self.path_divider}{movie_name}-{lang}.srt", 'wb') as f:
             f.write(content)
 
-    def download_subs(self, file_name: str, film_name_short: str, file_id, base_folder: str):
+    def change_os_folder_style(self):
+        if ":" in base_folder :
+            self.change_to_linux_style_folder
+            first_dir = base_folder[0]
+    def download_subs(self, lang: str, file_name: str, film_name_short: str, file_id, base_folder: str):
         print(f"Downloading {file_name} Subtitles")
 
         data = {
@@ -160,12 +168,14 @@ class Subtitles:
             #     new_folder = movie_name
             #     self.create_new_folder(base_folder, new_folder)
             #     self.move_movie_to_folder(movie_name, base_folder, new_folder)
-            #     self.creating_subs_file(response.content, movie_name, f'{base_folder}/{new_folder}')
+            #     self.creating_subs_file(response.content, movie_name, f'{base_folder}{self.path_divider}{new_folder}')
             #     return
         try:
             movie_name = self.get_dl_file_name(movie_folder, film_name_short)
+            if not movie_name:
+                movie_name = file_name.title()
             print(f"Movie file name is: {movie_name}")
-            self.creating_subs_file(response.content, movie_name, movie_folder)
+            self.creating_subs_file(response.content, movie_name, movie_folder, lang)
         except FileNotFoundError as e:
             raise DestinationFolderNotFoundException(f"Movie destination folder for {file_name} was not found.\n {e}")
 
@@ -178,3 +188,9 @@ class DestinationFolderNotFoundException(FileNotFoundError):
 class MovieFolderNotFound(FileNotFoundError):
     """Custom Exception"""
 
+if __name__ == "__main__":
+    #create menu
+    #get args
+    #search subs
+    #download subs
+    pass
