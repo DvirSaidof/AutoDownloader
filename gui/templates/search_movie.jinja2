@@ -1,0 +1,42 @@
+{% extends 'base.jinja2' %}
+
+{% block content %}
+<div class="container" ng-app="myApp" ng-controller="Example">
+	<div class="jumbotron">
+		<div class="container">
+			<h2>Automatic Downloader App</h2>
+			<p></p>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-5 col-sm-12">
+				<table border="1" id="html5logo" class="table table-striped">
+					<tbody>
+						<form method="POST">
+							<tr>
+								<th>Name of Movie</th>
+								<th>Year of release</th>
+							</tr>
+							<tr>
+								<td>
+									<input name="film_name">
+								</td>
+								<td>
+									<input name="film_year">
+								</td>
+							</tr>
+							<tr>
+							    <button type="submit">Search Movie</button>
+							</tr>
+						</form>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-md-7 col-sm-12">
+				<div id="canvas_container"></div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
