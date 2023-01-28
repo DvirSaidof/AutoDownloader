@@ -1,11 +1,23 @@
 {% extends 'base.jinja2' %}
 
 {% block content %}
-<h1>Welcome to your blog</h1>
-<h2>Posts</h2>
-
-<ul>
-    <a href="{{ url_for('torrent', post_id=0, current_search=current_search) }}">{{ current_search['film_name'] }}</a>
-</ul>
-<a href="{{ url_for('create') }}">Search a Movie</a>
+<h1>Automatic Downloader</h1>
+    <h2>Previous Downloads</h2>
+        <div class="col-md-5 col-sm-12">
+            <table border="1" id="html5logo" class="table table-striped">
+                <tbody>
+                    <tr>
+                        <th>Name of Torrent</th>
+                    </tr>
+                    {% for recent_download in recent_downloads: %}
+                    <tr>
+                        <td>
+                            {{ recent_download }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+<a href="{{ url_for('search') }}">Search a Movie</a>
 {% endblock %}
