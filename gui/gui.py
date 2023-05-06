@@ -3,7 +3,7 @@ import logging
 import webbrowser
 import time
 import json
-from celery import Celery
+#from celery import Celery
 from typing import List, Dict
 from db.redis import RedisClient
 from pages.subtitles import Subtitles, SubtitlesNotFoundException, DestinationFolderNotFoundException
