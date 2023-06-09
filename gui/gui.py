@@ -144,7 +144,6 @@ def torrents_results():
 
         auto_gui.download_movie(auto_gui.torrent_selected)
 
-
         msg = f"Downloading {auto_gui.torrent_selected}..."
         print(msg)
         auto_gui.logger.debug(msg)

@@ -13,14 +13,14 @@ class SearchTorrentPirateBay:
     www1.thepiratebay3.to domain using the search_film method.
     """
     def __init__(self, film_name):
+        if not film_name or not isinstance(film_name, str):
+            raise ValueError("The film name is either None or empty or not of str type")
         self.film_name = film_name
         self.soup = None
         self.torrents = []
 
     @property
     def _parse_search_query(self):
-        if not self.film_name or not isinstance(self.film_name, str):
-            raise ValueError("The film name is either None or empty or not of str type")
         return self.film_name.strip().replace(" ", "%20") + PirateBayWebConstants.VIDEO_ON_POSTFIX
 
     @property
@@ -33,11 +33,10 @@ class SearchTorrentPirateBay:
         return response.content
 
     def search_film(self) -> List[PirateBayFilmTorrent]:
-        if self._parse_search_query:
-            self.soup = BeautifulSoup(self._get_films_table, "html.parser")
-            locator = PrimaryPBTorrentPageLocators.TORRENT_LOCATOR
-            torrents_tags = self.soup.select(locator)
-            self.torrents = [PirateBayFilmTorrent(torrent_tag) for torrent_tag in torrents_tags]
+        self.soup = BeautifulSoup(self._get_films_table, "html.parser")
+        locator = PrimaryPBTorrentPageLocators.TORRENT_LOCATOR
+        torrents_tags = self.soup.select(locator)
+        self.torrents = [PirateBayFilmTorrent(torrent_tag) for torrent_tag in torrents_tags]
         return self.torrents
 
     def print_torrents(self) -> None:
