@@ -8,14 +8,14 @@ from typing import List, Dict
 from db.redis import RedisClient
 from pages.subtitles import Subtitles, SubtitlesNotFoundException, DestinationFolderNotFoundException
 from flask import Flask, render_template, request, redirect, url_for
-from pages.pb_torrents_page import SearchTorrentPirateBay
-from parsers.pb_torrent_parser import PirateBayFilmTorrent
+from pages.piratebay_page import SearchTorrentPirateBay
+from parsers.piratebay_torrent import PirateBayFilmTorrent
 
 
 logging.basicConfig(format='%(asctime)s %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
-                    datefmt='%d-%m-%Y:%H:%M:%S', level=logging.DEBUG, filename='auto_download_app.log')
+                    datefmt='%d-%m-%Y:%H:%M:%S', level=logging.DEBUG, filename='logs/auto_download_app.log')
 
-logging.FileHandler('auto_download_app_gui.log', 'w', 'utf-8')
+logging.FileHandler('logs/auto_download_app.log', 'w', 'utf-8')
 
 
 app = Flask(__name__)
@@ -36,31 +36,25 @@ class AutoDownloadGUI:
     GOOGLE_SHEET_UI_SLEEP = 3
 
     def __init__(self, config):
-        #cur_path = os.path.dirname(__file__)
-        #new_path = os.path.relpath(config, cur_path)
-        #print(new_path)
+
         with open(config, 'r') as f:
             self.config = json.loads(f.read())
 
-        self.film_name = None
-        self.torrents_options = dict()
-        self.torrents = []
-        self.torrent_selected = None
         self.opensubtitles_key = self.config.get('opensubtitles_credentials').get('api_key')
         self.folder = self.config.get('user_preferences').get('folder')
         self.language_preferences = self.config.get('user_preferences').get('language')
+
+        self.film_name = None
+        self.torrent_selected = None
+        self.torrents_options = dict()
+        self.torrents = []
+
+        self.redis_client = RedisClient(host='localhost', port=6379)
         self.logger = logging.getLogger("gui")
 
-
-        #self.redis_db = redis.Redis(host='localhost', port=6379)
-        self.redis_client = RedisClient(host='localhost', port=6379)
-        self.torrents = []
-        #self.redis_client.get_torrents()
-        #self.redis_db.mset({"": "", "": ""})
-
     def search_movie(self, film_name):
-        query = SearchTorrentPirateBay()
-        torrents = query.search_film(film_name)
+        query = SearchTorrentPirateBay(film_name)
+        torrents = query.search_film()
         if not torrents:
             self.logger.debug("Couldn't find any torrent!")
         else:
@@ -103,7 +97,7 @@ class AutoDownloadGUI:
 
 @app.route("/")
 def home():
-    return render_template('home.jinja2', recent_downloads=auto_gui.redis_client.get_recent_downloads())
+    return render_template('home.jinja2', recent_downloads=auto_gui.redis_client.get_recent_downloads)
 
 
 @app.route('/post/<torrents>')
@@ -119,8 +113,10 @@ def search():
     if request.method == 'POST':
         film_name = request.form.get('film_name')
         film_year = request.form.get('film_year')
+
         auto_gui.film_name = film_name
         auto_gui.search_movie(film_name)
+
         if auto_gui.torrents and len(auto_gui.torrents) > 0:
             return redirect(url_for('torrents_results'))
         else:
@@ -159,7 +155,7 @@ def torrents_results():
 
 
 def run(config_file):
-    print("1")
+    print("2")
     global auto_gui
     auto_gui = AutoDownloadGUI(config_file)
     app.run(host="0.0.0.0", debug=True)

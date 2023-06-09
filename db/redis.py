@@ -19,12 +19,13 @@ class RedisClient:
             pipe.rpush(self.DB_NAME, *self.recent_downloads)
             pipe.execute()
 
+    @property
     def get_recent_downloads(self) -> List:
         return self.recent_downloads
 
     def add_recent_download(self, movie: str):
 
-        if not self.verify_movie_not_in_recent_downloads(movie):
+        if movie in self.recent_downloads:
             return False
 
         if len(self.recent_downloads) == self.MAX_RECENT_DLS_LEN:
@@ -40,8 +41,4 @@ class RedisClient:
 
         return True
 
-    def verify_movie_not_in_recent_downloads(self, movie: str):
-        if movie in self.recent_downloads:
-            return False
-        return True
 
