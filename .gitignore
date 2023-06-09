@@ -3,5 +3,6 @@
 *venv
 *cred
 design.txt
+dump*
 config.json
 google_creds.json
