@@ -7,6 +7,7 @@ import sys
 from constants import SubtitlesConstants
 from pathlib import Path
 
+
 class Subtitles:
     """
     The Subtitles class will use movie_name as input and language to download subtitles from
@@ -15,7 +16,6 @@ class Subtitles:
     DL_URL = "https://api.opensubtitles.com/api/v1/download/"
     SEARCH_URL = "https://api.opensubtitles.com/api/v1/subtitles/"
     FILE_TYPES = ('.m1v', '.mpeg', '.mov', '.qt', '.mpa', '.mpg', '.mpe', '.avi', '.movie', '.mp4')
-
 
     def __init__(self, api_key):
         self.header = {
@@ -138,10 +138,10 @@ class Subtitles:
         with open(f"{movie_folder}{self.path_divider}{movie_name}-{lang}.srt", 'wb') as f:
             f.write(content)
 
-    def change_os_folder_style(self):
-        if ":" in base_folder :
-            self.change_to_linux_style_folder
-            first_dir = base_folder[0]
+    # def change_os_folder_style(self):
+    #     if ":" in base_folder :
+    #         self.change_to_linux_style_folder
+    #         first_dir = base_folder[0]
     def download_subs(self, lang: str, file_name: str, film_name_short: str, file_id, base_folder: str):
         print(f"Downloading {file_name} Subtitles")
 
@@ -179,18 +179,18 @@ class Subtitles:
         except FileNotFoundError as e:
             raise DestinationFolderNotFoundException(f"Movie destination folder for {file_name} was not found.\n {e}")
 
+
 class SubtitlesNotFoundException(FileNotFoundError):
     """Custom Exception"""
+
 
 class DestinationFolderNotFoundException(FileNotFoundError):
     """Custom Exception"""
 
+
 class MovieFolderNotFound(FileNotFoundError):
     """Custom Exception"""
 
+
 if __name__ == "__main__":
-    #create menu
-    #get args
-    #search subs
-    #download subs
     pass

@@ -6,10 +6,10 @@ import json
 #from celery import Celery
 from typing import List, Dict
 from db.redis import RedisClient
-from pages.subtitles import Subtitles, SubtitlesNotFoundException, DestinationFolderNotFoundException
+from subtitles_api.subtitles import Subtitles, SubtitlesNotFoundException, DestinationFolderNotFoundException
 from flask import Flask, render_template, request, redirect, url_for
-from pages.piratebay_page import SearchTorrentPirateBay
-from parsers.piratebay_torrent import PirateBayFilmTorrent
+from piratebay_api.pages.piratebay_page import SearchTorrentPirateBay
+from piratebay_api.parsers.piratebay_torrent import PirateBayFilmTorrent
 
 
 logging.basicConfig(format='%(asctime)s %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',

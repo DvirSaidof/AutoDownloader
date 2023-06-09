@@ -1,10 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
-import PTN
 
-#from auto_downloader.locators.pb_torrent_locators import PrimaryPBFilmTorrentLocators
-from locators.pb_torrent_locators import PrimaryPBFilmTorrentLocators
-#from constants import PirateBayWebConstants
+from piratebay_api.PTN.parse import PTN
+from piratebay_api.constants.pb_torrent_locators import PrimaryPBFilmTorrentLocators
 from constants import PirateBayWebConstants
 
 
@@ -14,7 +12,9 @@ class PirateBayFilmTorrent:
         self.parent = parent
         #{'year': 1976, 'resolution': '720p', 'quality': 'BrRip', 'codec': 'x264', 'title': 'Rocky', 'group': 'YIFY', 'excess': '750MB'}
         if self.torrent_name:
-            movie_info = PTN.parse(self.torrent_name)
+            ptn = PTN()
+            movie_info = ptn.parse(name=self.torrent_name)
+
             self.year = movie_info.get("year")
             self.resolution = movie_info.get("resolution")
             self.quality = movie_info.get("quality")

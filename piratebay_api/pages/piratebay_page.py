@@ -2,9 +2,9 @@ from bs4 import BeautifulSoup
 from typing import List
 import requests
 
-from constants import PirateBayWebConstants
-from locators.pb_page_locators import PrimaryPBTorrentPageLocators
-from parsers.piratebay_torrent import PirateBayFilmTorrent
+from piratebay_api.constants.constants import PirateBayWebConstants
+from piratebay_api.constants.pb_page_locators import PrimaryPBTorrentPageLocators
+from piratebay_api.parsers.piratebay_torrent import PirateBayFilmTorrent
 
 
 class SearchTorrentPirateBay:

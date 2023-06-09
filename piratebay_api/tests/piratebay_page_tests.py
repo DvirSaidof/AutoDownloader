@@ -1,7 +1,7 @@
 import unittest
 from datetime import timedelta, datetime
-from pages.piratebay_page import SearchTorrentPirateBay
-from constants import PirateBayWebConstants
+from piratebay_api.pages.piratebay_page import SearchTorrentPirateBay
+from piratebay_api.constants.constants import PirateBayWebConstants
 
 
 class PirateBayTorrentTests(unittest.TestCase):
@@ -30,3 +30,10 @@ class PirateBayTorrentTests(unittest.TestCase):
         search_query = SearchTorrentPirateBay("a-movie-which-does-not-exists")
         film_torrents = search_query.search_film()
         self.assertEqual(len(film_torrents), 0)
+
+    def test_order_by_seeds(self):
+        search_query = SearchTorrentPirateBay(self.film_name)
+        film_torrents = search_query.search_film()
+        first_movie = film_torrents[0]
+        second_movie = film_torrents[1]
+        self.assertGreater(first_movie.seeds, second_movie.seeds)
