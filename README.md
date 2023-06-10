@@ -30,5 +30,5 @@ The Web interface I used is google sheet, therefore setting a Google Sheet API k
 1. git clone https://github.com/DvirSaidof/AutoDownloader.git
 2. pip install -r requirements.txt
 3. change config.json.sample to config.json and fill all the empty values with the api keys generated in the prerequisites.
-4. python app.py
+4. bash auto_download.sh
 
