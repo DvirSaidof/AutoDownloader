@@ -66,7 +66,7 @@ class AutoDownloadGUI:
         webbrowser.open(torrent.magnet_link)
 
     def download_subtitles(self):
-        subs = Subtitles(self.opensubtitles_key)
+        subs = Subtitles(api_key=self.opensubtitles_key)
         year = str(self.torrent_selected.year) if self.torrent_selected.year else None
         for lang in self.language_preferences:
             try:
@@ -131,7 +131,7 @@ def search():
 def torrents_results():
     if request.method == 'POST':
         selected_torrent_index = int(request.form['submit_button']) - 1
-        auto_gui.torrent_selected = auto_gui.torrents[selected_torrent_index]
+        auto_gui.torrent_selected = auto_gui.torrents[selected_torrent_index] ####??????????
         auto_gui.logger.debug(f"Downloading {auto_gui.torrent_selected.torrent_name}")
         ## Check if Torrent selected is in recent downloads.
 
