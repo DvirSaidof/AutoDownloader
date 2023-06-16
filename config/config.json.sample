@@ -1,7 +1,8 @@
 {
   "user_preferences": {
     "language": ["English"], # Your prefered subtitles language
-    "folder": "" # Subtitles will be downloaded to this folder
+    "folder": "", # Subtitles will be downloaded to this folder
+    "logs_folder": "/var/logs"
   },
   "opensubtitles_credentials": {
     "api_key": ""  # Your open subtitles api key

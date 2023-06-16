@@ -1,34 +1,44 @@
-# AutoDownloader
+## AutoDownloader
 
-The AutoDownloader Application allows you to automatically download a torrent from utorrentweb plus download subtitles for that movie.
-The Web interface I used is google sheet, therefore setting a Google Sheet API key is one of the requirements.
+The AutoDownloader Application is a simple tool that provide a GUI interface to automate the process of downloading a movie (via utorrent) and subtitles. The project is composed of 3 main independent components: gui, piratebay_api, subtitles_api.
 
+### **Disclaimer**
+This script only triggers the download of given URLs. I'm not responsible for the usage you do with this software, for any damage might result by using it, and I'm certainly not encouraging piracy in any form.
 
-
-**Prerequisties:**
-
-  **OpenSubtitles Api Key:**
+### **Prerequisties:**
   
-    1. Register in https://www.opensubtitles.com/en/home
-    2. Go to https://www.opensubtitles.com/en/consumers and create Api Key.
+  #### **Windows**
+    1. Install WSL - https://learn.microsoft.com/en-us/windows/wsl/install
+
+  ##### **OpenSubtitles Api Key:**
+  
+    1. Register in - https://www.opensubtitles.com/en/home
+    2. Go to - https://www.opensubtitles.com/en/consumers and create Api Key.
     3. Save the key.
 
-  **UTorrentWeb:**
+  ##### **UTorrentWeb:**
   
     1. Download and install UTorrentWeb
     2. Go to Settings in the upper right corner.
+
+   
+   <img src="https://user-images.githubusercontent.com/34963960/205316252-8e329d83-0135-4670-9420-579ea90cefe9.png" width="800" height="550">
+
+    3. Disable "Show add torrent dialog" and set your desired download_folder
     
-   ![utorrentweb1](https://user-images.githubusercontent.com/34963960/205316252-8e329d83-0135-4670-9420-579ea90cefe9.png)
+   <img src="https://user-images.githubusercontent.com/34963960/205316376-3c7fe307-4bb0-4b8d-b4ef-184aca0e8496.png" width="800" height="550">
+   
 
-    3. Disable "Show add torrent dialog"
-    
-   ![utorrentweb2](https://user-images.githubusercontent.com/34963960/205316376-3c7fe307-4bb0-4b8d-b4ef-184aca0e8496.png)
+### **Steps to run the app:**
 
+```
+1. # Open your zsh/bash/wsl terminal and navigate to your projects dir
+2. git clone https://github.com/DvirSaidof/AutoDownloader.git
+3. mv config.json.sample config.json
+4. # Fill all the empty values. Make sure the download_folder is the same as set in utorrentweb and that logs_folder exists.
+5. sudo bash auto_download.sh $(whoami)
+6. # Open 127.0.0.1:5000 in your web explorer.
+```
 
-**Steps to run the app:**
-
-1. git clone https://github.com/DvirSaidof/AutoDownloader.git
-2. pip install -r requirements.txt
-3. change config.json.sample to config.json and fill all the empty values with the api keys generated in the prerequisites.
-4. bash auto_download.sh
-
+### **Credits** 
+In order to parse a torrent name I used code from parse-torrent-name repository: https://github.com/divijbindlish/parse-torrent-name
