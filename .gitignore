@@ -6,3 +6,5 @@ design.txt
 dump*
 config.json
 google_creds.json
+___pycache__
+.DS_*
