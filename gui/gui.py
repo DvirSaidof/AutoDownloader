@@ -171,8 +171,10 @@ def torrents_results():
     return render_template('torrents_results.jinja2', torrents=auto_gui.torrents)
 
 
-def run(opensubtitles_key, download_folder, language_preferences, logs_folder, system_os=None):
-    print("Running AutoDownloader App")
+def run(opensubtitles_key, download_folder, language_preferences, logs_folder, system_os=None, port=5000,
+        ip_address="0.0.0.0"):
+
+    print(f"Running AutoDownloader App\nListening on http://{ip_address}:{port}")
     global auto_gui
     if not system_os:
         system_os = "linux"
@@ -182,9 +184,8 @@ def run(opensubtitles_key, download_folder, language_preferences, logs_folder, s
                                language_preferences=language_preferences,
                                logs_folder=logs_folder,
                                system_os=system_os)
-    app.run(host="0.0.0.0", debug=True)
+    app.run(host="0.0.0.0", debug=True, port=port)
 
 
 if __name__ == '__main__':
-    print("1")
-    auto_gui = AutoDownloadGUI("../config/config.json")
+    auto_gui = None

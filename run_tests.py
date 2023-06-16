@@ -1,7 +1,7 @@
 import unittest
-
 from piratebay_api.tests.piratebay_page_tests import PirateBayTorrentTests
 from subtitles_api.subtitles_tests import SubtitlesTests
+from gui.gui import AutoDownloadGUI
 
 
 def run_tests(test_class):
@@ -12,3 +12,4 @@ def run_tests(test_class):
 
 run_tests(PirateBayTorrentTests)
 run_tests(SubtitlesTests)
+run_tests(AutoDownloadGUI)

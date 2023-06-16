@@ -1,7 +1,5 @@
 
-
-
-function install_app {
+function install_app() {
   shell_type="$1"
   app="$2"
   user_name="$3"
@@ -20,8 +18,11 @@ function install_app {
   fi
 }
 
-user_name=$1
+user_name="$1"
 shell_type="$(bash --version)"
+port="50100"
+config_path="$(pwd)/config/config.json"
+
 pip install -r requirements.txt
 
 if [[ $shell_type =~ "apple" ]]; then
@@ -36,4 +37,10 @@ echo "Starting redis-server"
 redis-server &
 
 echo "Starting AutoDownloader App"
-python app.py
+if [[ $shell_type =~ "apple" ]]; then
+  ip_address="$(ipconfig getifaddr en0)"
+else
+  ip_address="$(ipconfig getifaddr en0)"
+fi
+python app.py "$config_path" "$port" "$ip_address"
+
