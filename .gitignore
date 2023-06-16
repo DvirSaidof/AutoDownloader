@@ -5,6 +5,6 @@
 design.txt
 dump*
 config.json
-__pycache__/.
+__pycache__/*
 .DS_Store
 */__pycache__/*
