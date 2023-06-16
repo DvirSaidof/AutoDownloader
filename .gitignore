@@ -6,5 +6,5 @@ design.txt
 dump*
 config.json
 google_creds.json
-**/__pycache__/co
+__pycache__
 .DS_Store
