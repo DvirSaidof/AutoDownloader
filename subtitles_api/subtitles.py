@@ -14,14 +14,19 @@ class Subtitles:
     the internet (opensubtitles api??)
     """
 
-    def __init__(self, api_key, logger=None):
+    def __init__(self, api_key, logger=None, log_folder='/var/logs'):
+
+        self.path_divider = "/"
+        if sys.platform.startswith("win"):
+            self.path_divider = "\\"
 
         if logger and isinstance(logger, logging.Logger):
             self.logger = logger
         else:
             logging.basicConfig(format='%(asctime)s %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
-                                datefmt='%d-%m-%Y:%H:%M:%S', level=logging.DEBUG, filename='logs/subtitles.log')
-            logging.FileHandler('logs/subtitles.log', 'w', 'utf-8')
+                                datefmt='%d-%m-%Y:%H:%M:%S', level=logging.DEBUG,
+                                filename=f'{log_folder}{self.path_divider}subtitles.log')
+            logging.FileHandler(f'{log_folder}{self.path_divider}subtitles.log', 'w', 'utf-8')
             self.logger = logging.getLogger("subtitles")
 
         if not api_key or not isinstance(api_key, str):
@@ -34,13 +39,7 @@ class Subtitles:
             'Api-Key': api_key
         }
         self.most_matches = dict()
-        self.path_divider = "/"
 
-        if sys.platform.startswith("win"):
-            self._print_log("Found Windwos System")
-            self.path_divider = "\\"
-        else:
-            self._print_log("Found Linux System")
 
     def _print_log(self, msg):
         print(msg)

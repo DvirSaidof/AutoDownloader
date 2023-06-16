@@ -12,12 +12,6 @@ from piratebay_api.pages.piratebay_page import SearchTorrentPirateBay
 from piratebay_api.parsers.piratebay_torrent import PirateBayFilmTorrent
 
 
-logging.basicConfig(format='%(asctime)s %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
-                    datefmt='%d-%m-%Y:%H:%M:%S', level=logging.DEBUG, filename='logs/auto_download_app.log')
-
-logging.FileHandler('logs/auto_download_app.log', 'w', 'utf-8')
-
-
 app = Flask(__name__)
 
 
@@ -35,21 +29,45 @@ class AutoDownloadGUI:
     SLEEP_TIME_AFTER_DL_START = 30
     GOOGLE_SHEET_UI_SLEEP = 3
 
-    def __init__(self, config):
+    def __init__(self, opensubtitles_key: str, language_preferences: str, download_folder: str, logs_folder: str,
+                 system_os="linux"):
 
-        with open(config, 'r') as f:
-            self.config = json.loads(f.read())
+        linux_divider = "/"
+        windows_divider = "\\"
+        self.path_divider = ""
 
-        self.opensubtitles_key = self.config.get('opensubtitles_credentials').get('api_key')
-        self.folder = self.config.get('user_preferences').get('folder')
-        self.language_preferences = self.config.get('user_preferences').get('language')
+        if system_os == "windows":
+            self.path_divider = windows_divider
+            if linux_divider in download_folder:
+                download_folder.replace(linux_divider, self.path_divider)
+            if linux_divider in logs_folder:
+                logs_folder.replace(linux_divider, self.path_divider)
+        else:
+            self.path_divider = linux_divider
+            if windows_divider in download_folder:
+                download_folder.replace(windows_divider, self.path_divider)
+            if windows_divider in logs_folder:
+                logs_folder.replace(windows_divider, self.path_divider)
+
+        self.opensubtitles_key = opensubtitles_key
+        self.logs_folder = logs_folder
+        self.download_folder = download_folder
+        self.language_preferences = language_preferences
 
         self.film_name = None
         self.torrent_selected = None
         self.torrents_options = dict()
         self.torrents = []
 
+
         self.redis_client = RedisClient(host='localhost', port=6379)
+
+        download_log = "auto_download_app.log"
+        logging.basicConfig(format='%(asctime)s %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
+                            datefmt='%d-%m-%Y:%H:%M:%S', level=logging.DEBUG, filename=f'{logs_folder}{self.path_divider}{download_log}')
+
+        logging.FileHandler(f'{logs_folder}{self.path_divider}{download_log}', 'w', 'utf-8')
+
         self.logger = logging.getLogger("gui")
 
     def search_movie(self, film_name):
@@ -66,7 +84,7 @@ class AutoDownloadGUI:
         webbrowser.open(torrent.magnet_link)
 
     def download_subtitles(self):
-        subs = Subtitles(api_key=self.opensubtitles_key)
+        subs = Subtitles(api_key=self.opensubtitles_key, log_folder=self.logs_folder)
         year = str(self.torrent_selected.year) if self.torrent_selected.year else None
         for lang in self.language_preferences:
             try:
@@ -83,7 +101,7 @@ class AutoDownloadGUI:
                                    file_name=self.torrent_selected.torrent_name,
                                    film_name_short=self.film_name,
                                    file_id=subs_file_id,
-                                   base_folder=self.folder)
+                                   base_folder=self.download_folder)
             except SubtitlesNotFoundException as e:
                 print(e)
                 self.logger.error(e)
@@ -153,14 +171,20 @@ def torrents_results():
     return render_template('torrents_results.jinja2', torrents=auto_gui.torrents)
 
 
-def run(config_file):
-    print("2")
+def run(opensubtitles_key, download_folder, language_preferences, logs_folder, system_os=None):
+    print("Running AutoDownloader App")
     global auto_gui
-    auto_gui = AutoDownloadGUI(config_file)
+    if not system_os:
+        system_os = "linux"
+
+    auto_gui = AutoDownloadGUI(opensubtitles_key=opensubtitles_key,
+                               download_folder=download_folder,
+                               language_preferences=language_preferences,
+                               logs_folder=logs_folder,
+                               system_os=system_os)
     app.run(host="0.0.0.0", debug=True)
 
 
 if __name__ == '__main__':
     print("1")
     auto_gui = AutoDownloadGUI("../config/config.json")
-    run()
