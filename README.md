@@ -7,7 +7,7 @@ This script only triggers the download of given URLs. I'm not responsible for th
 
 ### **Prerequisties:**
   
-  #### **Windows**
+  #### **For Windows**
     1. Install WSL - https://learn.microsoft.com/en-us/windows/wsl/install
 
   ##### **OpenSubtitles Api Key:**
