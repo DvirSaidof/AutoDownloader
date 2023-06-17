@@ -4,7 +4,7 @@ function install_app() {
   app="$2"
   user_name="$3"
 
-  if ! [ -x "$(command -v $app)" ]; then
+  if ! [[ -x "$(command -v sudo -u "$user_name" $app)" ]] || [[ -x "$(command -v $app)" ]]; then
     echo "$app is not installed. Installing $app" >&2
     if [[ $shell_type == "zsh" ]]; then
       echo "Installing with brew"
@@ -23,7 +23,8 @@ shell_type="$(bash --version)"
 port="50100"
 config_path="$(pwd)/config/config.json"
 
-pip install -r requirements.txt
+echo "Installing python requirements"
+#pip install -r requirements.txt
 
 if [[ $shell_type =~ "apple" ]]; then
   echo "Using zsh"
@@ -42,5 +43,5 @@ if [[ $shell_type =~ "apple" ]]; then
 else
   ip_address="$(ipconfig getifaddr en0)"
 fi
-python app.py "$config_path" "$port" "$ip_address"
+#bash
 
