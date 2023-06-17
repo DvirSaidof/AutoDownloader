@@ -4,7 +4,7 @@ function install_app() {
   app="$2"
   user_name="$3"
 
-  if ! [[ -x "$(command -v sudo -u "$user_name" $app)" ]] || [[ -x "$(command -v $app)" ]]; then
+  if ! [[ -x "$(command -v sudo -u "$user_name" $app)" ]] && ! [[ -x "$(command -v $app)" ]]; then
     echo "$app is not installed. Installing $app" >&2
     if [[ $shell_type == "zsh" ]]; then
       echo "Installing with brew"
@@ -24,14 +24,14 @@ port="50100"
 config_path="$(pwd)/config/config.json"
 
 echo "Installing python requirements"
-#pip install -r requirements.txt
+pip install -r requirements.txt
 
 if [[ $shell_type =~ "apple" ]]; then
   echo "Using zsh"
   install_app "zsh" "redis" $user_name
 else
   echo "Using bash"
-  install_app "bash" "redis"
+  install_app "bash" "redis" $user_name
 fi
 
 echo "Starting redis-server"
@@ -43,5 +43,7 @@ if [[ $shell_type =~ "apple" ]]; then
 else
   ip_address="$(ipconfig getifaddr en0)"
 fi
-#bash
+
+echo "Starting AutoDownloader App"
+python app.py
 
