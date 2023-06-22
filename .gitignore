@@ -7,4 +7,5 @@ dump*
 config.json
 __pycache__/*
 .DS_Store
+.idea
 */__pycache__/*
