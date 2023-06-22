@@ -34,7 +34,7 @@ This script only triggers the download of given URLs. I'm not responsible for th
 ```
 1. # Open your zsh/bash/wsl terminal and navigate to your projects dir
 2. git clone https://github.com/DvirSaidof/AutoDownloader.git
-3. mv AutoDownloader/config/config.json.sample AutoDownloader/config/config.json.sample
+3. mv AutoDownloader/config/config.json.sample AutoDownloader/config/config.json
 4. # Fill all the empty values in config.json. Make sure the download_folder is the same as set in utorrentweb and that logs_folder exists.
 5. sudo bash auto_download.sh $(whoami)
 ```
