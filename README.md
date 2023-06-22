@@ -7,16 +7,16 @@ This script only triggers the download of given URLs. I'm not responsible for th
 
 ### **Prerequisties:**
   
-  #### **For Windows**
+  ###### For Windows
     1. Install WSL - https://learn.microsoft.com/en-us/windows/wsl/install
 
-  ##### **OpenSubtitles Api Key:**
+  ###### OpenSubtitles Api Key:
   
     1. Register in - https://www.opensubtitles.com/en/home
     2. Go to - https://www.opensubtitles.com/en/consumers and create Api Key.
     3. Save the key.
 
-  ##### **UTorrentWeb:**
+  ###### UTorrentWeb:
   
     1. Download and install UTorrentWeb
     2. Go to Settings in the upper right corner.
