@@ -13,7 +13,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 class AutoDownloadGUITests(unittest.TestCase):
     def setUp(self) -> None:
-
+        pass
 
     def test_search_movie(self):
         #self.driver.get("https://0.0.0.0:5000")
