@@ -1,24 +1,24 @@
 ## AutoDownloader
 
-The AutoDownloader Application is a simple tool that provide a GUI interface to automate the process of downloading a movie (via utorrent) and subtitles. The project is composed of 3 main components: gui, piratebay_api, subtitles_api.
+The AutoDownloader Application is a simple tool that provides a GUI interface to automate the process of downloading a movie (via utorrent) and subtitles. The project is composed of 3 main components: gui, piratebay_api, and subtitles_api.
 
 ### **Disclaimer**
-This script only triggers the download of given URLs. I'm not responsible for the usage you do with this software, for any damage might result by using it, and I'm certainly not encouraging piracy in any form.
+This script only triggers the download of given URLs. I'm not responsible for the usage you do with this software, for any damage that might result from using it, and I'm certainly not encouraging piracy in any form.
 
-### **Prerequisties:**
+### **Prerequisites:**
   
   ###### For Windows
     1. Install WSL - https://learn.microsoft.com/en-us/windows/wsl/install
 
   ###### OpenSubtitles Api Key:
   
-    1. Register in - https://www.opensubtitles.com/en/home
+    1. Register at [opensubtitles](https://www.opensubtitles.com/en/home)
     2. Go to - https://www.opensubtitles.com/en/consumers and create Api Key.
     3. Save the key.
 
   ###### UTorrentWeb:
   
-    1. Download and install UTorrentWeb
+    1. Download and install [UTorrentWeb](https://www.utorrent.com/web/)
     2. Go to Settings in the upper right corner.
 
    
