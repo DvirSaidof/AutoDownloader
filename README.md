@@ -8,11 +8,11 @@ This script only triggers the download of given URLs. I'm not responsible for th
 ### **Prerequisites:**
   
   ###### For Windows
-    1. Install [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)
+    1. Install [WSL](https://learn.microsoft.com/en-us/windows/wsl/install/)
 
   ###### OpenSubtitles Api Key:
   
-    1. Register at [opensubtitles](https://www.opensubtitles.com/en/home)
+    1. Register at [opensubtitles](https://www.opensubtitles.com/en/home/)
     2. Go to - https://www.opensubtitles.com/en/consumers and create Api Key.
     3. Save the key.
 
@@ -41,4 +41,4 @@ This script only triggers the download of given URLs. I'm not responsible for th
 ```
 
 ### **Credits** 
-In order to parse a torrent name I used code from parse-torrent-name repository: https://github.com/divijbindlish/parse-torrent-name
+In order to parse a torrent name I used code from [parse-torrent-name](https://github.com/divijbindlish/parse-torrent-name)https://github.com/divijbindlish/parse-torrent-name repository
