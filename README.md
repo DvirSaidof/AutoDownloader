@@ -41,4 +41,4 @@ This script only triggers the download of given URLs. I'm not responsible for th
 ```
 
 ### **Credits** 
-In order to parse a torrent name I used code from [parse-torrent-name](https://github.com/divijbindlish/parse-torrent-name)https://github.com/divijbindlish/parse-torrent-name repository
+In order to parse a torrent name I used code from [parse-torrent-name](https://github.com/divijbindlish/parse-torrent-name) repository
