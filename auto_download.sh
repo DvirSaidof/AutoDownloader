@@ -71,7 +71,7 @@ else
   install_app "bash" "jq" $user_name
   ip_address="$(hostname -I)"
 fi
-logs_folder=$(cat config/config.json | jq ".user_preferences.logs_folder")
+logs_folder="$(cat config/config.json | jq -r ".user_preferences.logs_folder")"
 echo "Creating logs folder $logs_folder"
 mkdir -p "$logs_folder"
 
