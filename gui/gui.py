@@ -171,7 +171,7 @@ def torrents_results():
 def run(opensubtitles_key, download_folder, language_preferences, logs_folder, system_os=None, port=5000,
         ip_address="0.0.0.0"):
 
-    print(f"Running AutoDownloader App\nListening on http://{ip_address}:{port}")
+    print(f"Running AutoDownloader App\nListening on http://{ip_address.strip()}:{port}")
     global auto_gui
     if not system_os:
         system_os = "linux"
