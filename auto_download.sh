@@ -63,12 +63,17 @@ echo "Installing python requirements"
 if [[ $shell_type =~ "apple" ]]; then
   echo "Using zsh"
   install_app "zsh" "redis-server" $user_name
+  install_app "zsh" "jq" $user_name
   ip_address="$(ipconfig getifaddr en0)"
 else
   echo "Using bash"
   install_app "bash" "redis-server" $user_name
+  install_app "bash" "jq" $user_name
   ip_address="$(hostname -I)"
 fi
+echo "Creating logs folder"
+logs_folder=$(cat config/config.json | jq ".user_preferences.logs_folder")
+mkdir -p "$logs_folder"
 
 echo "Starting redis-server"
 redis-server &
