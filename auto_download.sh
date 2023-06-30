@@ -10,7 +10,7 @@ function set_correct_shell_type() {
   fi
 }
 function display_help() {
-    echo -e "\nUsage: script.sh -u <username> [-p <port>]"
+    echo -e "\nUsage: sudo $0 -u <username> [-p <port>]"
     echo "Options:"
     echo "  -u, --username <username>  Specify the username (mandatory)"
     echo "  -p, --port <port>          Specify the port (optional)"
@@ -18,7 +18,7 @@ function display_help() {
 }
 function check_number_of_arguments() {
   if [[ $# -eq 0 ]]; then
-    display_help
+    display_help $0
     exit 1
   fi
 }
@@ -32,7 +32,7 @@ function parse_command_line_options() {
         -u|--username)
             if [[ -z $2 ]]; then
                 echo -e "\nError: Missing argument for $key"
-                display_help
+                display_help $0
                 exit 1
             fi
             user_name="$2"
@@ -41,19 +41,19 @@ function parse_command_line_options() {
         -p|--port)
             if [[ -z $2 ]]; then
               echo -e "\nError: Missing argument for $key"
-              display_help
+              display_help $0
               exit 1
             fi
             port="$2"
             shift 2
             ;;
         -h|--help)
-            display_help
+            display_help $0
             exit 0
             ;;
         *)
             echo -e "\nInvalid option: $key"
-            display_help
+            display_help $0
             shift
             exit 1
             ;;
