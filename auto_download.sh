@@ -2,12 +2,11 @@
 
 function set_correct_shell_type() {
   if [[ "$(bash --version)" =~ "apple" ]]; then
-    echo "Using zsh shell"
     shell_type="zsh"
   else
-    echo "Using bash shell"
     shell_type="bash"
   fi
+  echo "$shell_type"
 }
 function display_help() {
     echo -e "\nUsage: sudo $0 -u <username> [-p <port>]"
@@ -136,8 +135,10 @@ config_path="$script_dir/config/config.json"
 python_cmd="python"
 pip_cmd="pip"
 ip_address=""
+shell_type="bash"
 
-set_correct_shell_type
+read shell_type < <(set_correct_shell_type)
+echo "Running on $shell_type shell"
 
 parse_command_line_options "$@"
 
