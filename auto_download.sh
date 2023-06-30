@@ -1,3 +1,18 @@
+#!/bin/bash
+
+# Check the number of arguments
+if [ $# -lt 1 ]; then
+    echo -e "\nMissing user param\nUsage: sudo $0 \$(whoami)\nExiting...\n"
+    exit 1
+fi
+# Set the right shell type
+if [[ "$(bash --version)" =~ "apple" ]]; then
+  echo "Using zsh shell"
+  shell_type="zsh"
+else
+  echo "Using bash shell"
+  shell_type="bash"
+fi
 
 function install_app() {
   shell_type="$1"
@@ -33,25 +48,19 @@ function set_python_env() {
 }
 function install_requirements() {
   shell_type="$1"
-  user_name="$2"
+  pip_cmd="$2"
+  user_name="$3"
 
   echo "Installing python requirements"
   "$pip_cmd" install -r requirements.txt
 
   echo "Installing system requirements"
-  if [[ $shell_type =~ "apple" ]]; then
-    echo "Using zsh"
-    install_app "zsh" "redis-server" "$user_name"
-    install_app "zsh" "jq" "$user_name"
-  else
-    echo "Using bash"
-    install_app "bash" "redis-server" "$user_name"
-    install_app "bash" "jq" "$user_name"
-  fi
+  install_app "$shell_type" "redis-server" "$user_name"
+  install_app "$shell_type" "jq" "$user_name"
 }
 function get_ip_address() {
   shell_type="$1"
-  if [[ $shell_type =~ "apple" ]]; then
+  if [[ $shell_type == "zsh" ]]; then
     ip_address="$(ipconfig getifaddr en0)"
   else
     ip_address="$(hostname -I)"
@@ -59,7 +68,7 @@ function get_ip_address() {
   echo "$ip_address"
 }
 function validate_config_file() {
-  $config_path="$1"
+  config_path="$1"
   if [ ! -e "$config_path" ]; then
       echo -e "\nconfig.json file not found at: $config_path\n"
       echo -e "Please check the file path and try again.\nExiting...\n"
@@ -73,15 +82,8 @@ function create_log_folder() {
   mkdir -p "$logs_folder"
 }
 
-# Check the number of arguments
-if [ $# -lt 1 ]; then
-    echo -e "\nUsage: $0 \$(whoami)\nExiting...\n"
-    exit 1
-fi
-
 # Assign arguments to variables
 user_name="$1"
-shell_type="$(bash --version)"
 port="5000"
 script_dir=$(dirname "$(readlink -f "$0")")
 config_path="$script_dir/config/config.json"
@@ -94,13 +96,14 @@ validate_config_file "$config_path"
 
 # Set python and pip versions
 read python_cmd pip_cmd < <(set_python_env)
-echo "Using python: $python_cmd and pip: $pip_cmd"
+echo "Using $python_cmd and $pip_cmd"
 
 # Install python and system requirements
-install_requirements "$pip_cmd" "$user_name"
+install_requirements "$shell_type" "$pip_cmd" "$user_name"
 
 # Set the local ip address
 read ip_address < <(get_ip_address "$shell_type")
+echo "Local IP Address: $ip_address"
 
 # Create the logs folder if doesn't exists
 create_log_folder "$config_path"
