@@ -50,10 +50,25 @@ function set_python_env() {
   echo "$python_cmd" "$pip_cmd"
 }
 
+# Check the number of arguments
+if [ $# -lt 1 ]; then
+    echo -e "\nUsage: $0 <username>\nExiting...\n"
+    exit 1
+fi
+
+# Assign arguments to variables
 user_name="$1"
 shell_type="$(bash --version)"
 port="5000"
-config_path="$(pwd)/config/config.json"
+script_dir=$(dirname "$(readlink -f "$0")")
+config_path="$script_dir/config/config.json"
+
+# Validate config.json file exists
+if [ ! -e "$config_path" ]; then
+    echo -e "\nconfig.json file not found at: $config_path\n"
+    echo -e "Please check the file path and try again.\nExiting...\n"
+    exit 1
+fi
 
 read python_cmd pip_cmd < <(set_python_env)
 
