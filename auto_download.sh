@@ -1,19 +1,65 @@
 #!/bin/bash
 
-# Check the number of arguments
-if [ $# -lt 1 ]; then
-    echo -e "\nMissing user param\nUsage: sudo $0 \$(whoami)\nExiting...\n"
+function set_correct_shell_type() {
+  if [[ "$(bash --version)" =~ "apple" ]]; then
+    echo "Using zsh shell"
+    shell_type="zsh"
+  else
+    echo "Using bash shell"
+    shell_type="bash"
+  fi
+}
+function display_help() {
+    echo -e "\nUsage: sudo $0 -u <username> [-p <port>]"
+    echo "Options:"
+    echo "  -u, --username <username>  Specify the username (mandatory)"
+    echo "  -p, --port <port>          Specify the port (optional)"
+    echo "  -h, --help                 Display this help menu"
+}
+function check_number_of_arguments() {
+  if [[ $# -eq 0 ]]; then
+    display_help $0
     exit 1
-fi
-# Set the right shell type
-if [[ "$(bash --version)" =~ "apple" ]]; then
-  echo "Using zsh shell"
-  shell_type="zsh"
-else
-  echo "Using bash shell"
-  shell_type="bash"
-fi
+  fi
+}
+function parse_command_line_options() {
+  
+  check_number_of_arguments "$@" 
 
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case $key in
+        -u|--username)
+            if [[ -z $2 ]]; then
+                echo -e "\nError: Missing argument for $key"
+                display_help $0
+                exit 1
+            fi
+            user_name="$2"
+            shift 2
+            ;;
+        -p|--port)
+            if [[ -z $2 ]]; then
+              echo -e "\nError: Missing argument for $key"
+              display_help $0
+              exit 1
+            fi
+            port="$2"
+            shift 2
+            ;;
+        -h|--help)
+            display_help $0
+            exit 0
+            ;;
+        *)
+            echo -e "\nInvalid option: $key"
+            display_help $0
+            shift
+            exit 1
+            ;;
+    esac
+  done
+}
 function install_app() {
   shell_type="$1"
   app="$2"
@@ -84,13 +130,16 @@ function create_log_folder() {
 
 # Assign arguments to variables
 user_name="$1"
-# TODO: get port as given, with default value 5000 if no arg is given
 port="5000"
 script_dir=$(dirname "$(readlink -f "$0")")
 config_path="$script_dir/config/config.json"
 python_cmd="python"
 pip_cmd="pip"
 ip_address=""
+
+set_correct_shell_type
+
+parse_command_line_options "$@"
 
 # Validate config.json file exists
 validate_config_file "$config_path"
