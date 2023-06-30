@@ -84,6 +84,7 @@ function create_log_folder() {
 
 # Assign arguments to variables
 user_name="$1"
+# TODO: get port as given, with default value 5000 if no arg is given
 port="5000"
 script_dir=$(dirname "$(readlink -f "$0")")
 config_path="$script_dir/config/config.json"
