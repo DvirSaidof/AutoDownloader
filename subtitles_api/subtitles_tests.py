@@ -11,6 +11,14 @@ class SubtitlesTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     Subtitles(wrong_api_key, log_folder="logs")
 
-    def test_get_dl_file_folder_path(self):
+    def test_search_subs_best_fit(self):
+        # TODO
+        pass
+
+    def download_subs_right_dir(self):
+        # TODO
+        pass
+
+    def download_subs_right_subs(self):
         # TODO
         pass
