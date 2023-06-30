@@ -44,7 +44,7 @@ function set_python_env() {
       pip_cmd="pip3"
     else
       echo "Couldn't find python installed in the system"
-      exit 1
+      exit
     fi
   fi
   echo "$python_cmd" "$pip_cmd"
@@ -86,7 +86,7 @@ else
   install_app "bash" "jq" $user_name
   ip_address="$(hostname -I)"
 fi
-logs_folder="$(cat $config_path | jq -r ".user_preferences.logs_folder")"
+logs_folder="$(cat config/config.json | jq -r ".user_preferences.logs_folder")"
 echo "Creating logs folder $logs_folder"
 mkdir -p "$logs_folder"
 
