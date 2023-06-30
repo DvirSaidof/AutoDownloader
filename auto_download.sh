@@ -52,7 +52,7 @@ function set_python_env() {
 
 # Check the number of arguments
 if [ $# -lt 1 ]; then
-    echo -e "\nUsage: $0 <username>\nExiting...\n"
+    echo -e "\nUsage: $0 \$(whoami)\nExiting...\n"
     exit 1
 fi
 
@@ -62,6 +62,8 @@ shell_type="$(bash --version)"
 port="5000"
 script_dir=$(dirname "$(readlink -f "$0")")
 config_path="$script_dir/config/config.json"
+python_cmd="python"
+pip_cmd="pip"
 
 # Validate config.json file exists
 if [ ! -e "$config_path" ]; then
