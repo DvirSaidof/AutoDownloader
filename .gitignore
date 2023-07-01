@@ -1,4 +1,5 @@
 *.log
+*.pyc
 *config.py
 *venv
 *cred
@@ -8,4 +9,4 @@ config.json
 __pycache__/*
 .DS_Store
 .idea
-*/__pycache__/*
+**/__pycache__
