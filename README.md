@@ -1,5 +1,6 @@
 ## AutoDownloader
 
+
 The AutoDownloader Application is a simple tool that provides a GUI interface to automate the process of downloading a movie (via utorrent) and subtitles. The project is composed of 3 main components: gui, piratebay_api, and subtitles_api.
 
 ### **Disclaimer**
