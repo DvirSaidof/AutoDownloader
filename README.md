@@ -27,7 +27,6 @@ This script only triggers the download of given URLs. I'm not responsible for th
 3. Disable "Show add torrent dialog" and set your desired download_folder
     
    <img src="https://user-images.githubusercontent.com/34963960/205316376-3c7fe307-4bb0-4b8d-b4ef-184aca0e8496.png" width="800" height="550">
-   
 
 ### **Steps to run the app:**
 
