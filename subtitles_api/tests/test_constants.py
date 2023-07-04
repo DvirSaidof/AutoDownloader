@@ -1,0 +1,11 @@
+class SubtitlesTestConstants:
+    CONFIG_JSON_PATH = "../../config/config.json"
+    LANG = "English"
+    TITLE = "Rocky"
+    YEAR = "1976"
+    RESOLUTION = "720p"
+    QUALITY = "BrRip"
+    CODEC = "x264"
+    GROUP = "YIFY"
+    EXCESS = "750MB"
+    MOVIE_FILE_NAME = "Rocky_Test"

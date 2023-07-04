@@ -14,6 +14,7 @@ class Subtitles:
     the internet (opensubtitles api??)
     """
 
+    # TODO: We will need to validate the opensubtitles key somehow
     def __init__(self, api_key, logger=None, log_folder='/var/logs'):
 
         self.path_divider = "/"
@@ -150,6 +151,7 @@ class Subtitles:
         self._print_log(search_query)
         try:
             response = requests.get(search_query, headers=self.header)
+            print(f"response zaken = {response}")
             json_content = json.loads(response.content)
         except requests.exceptions.MissingSchema as e:
             raise requests.exceptions.MissingSchema(e)

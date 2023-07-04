@@ -1,4 +1,3 @@
-
 class SubtitlesConstants:
     DL_URL = "https://api.opensubtitles.com/api/v1/download/"
     SEARCH_URL = "https://api.opensubtitles.com/api/v1/subtitles/"
