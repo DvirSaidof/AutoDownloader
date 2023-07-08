@@ -17,6 +17,11 @@ class Subtitles:
     # TODO: We will need to validate the opensubtitles key somehow
     def __init__(self, api_key, logger=None, log_folder='/var/logs'):
 
+        self.header = {
+            'Content-type': 'application/json',
+            'Api-Key': api_key
+        }
+
         self.path_divider = "/"
         if sys.platform.startswith("win"):
             self.path_divider = "\\"
@@ -30,17 +35,38 @@ class Subtitles:
             logging.FileHandler(f'{log_folder}{self.path_divider}subtitles.log', 'w', 'utf-8')
             self.logger = logging.getLogger("subtitles")
 
-        if not api_key or not isinstance(api_key, str):
-            msg = "Api key wasn't configured or is not of type str"
-            self._print_log(msg)
-            raise ValueError(msg)
-
-        self.header = {
-            'Content-type': 'application/json',
-            'Api-Key': api_key
-        }
+        if not self._is_api_key_valid(api_key):
+            raise ValueError("Invalid API Key!")
+        
         self.most_matches = dict()
 
+    def _is_api_key_valid(self, api_key):
+        
+        if not api_key or not isinstance(api_key, str):
+            msg = f"Api key: [{api_key}], wasn't configured or is not of type str!"
+            self._print_log(msg)
+            return False
+        else:
+            # validate an OpenSubtitles API key using the requests module
+            header = {
+                'Accept': 'application/json, example',
+                'Api-Key': api_key
+            }
+
+            response = requests.get(
+                 SubtitlesConstants.SUBS_FORMATS_URL, 
+                 headers=header
+            )
+            
+            # Check if the request was successful (status code 200)
+            if not response.ok:
+                status_code = response.status_code
+                msg = f"http requests get error! status code is: {status_code}"
+                self._print_log(msg)
+                return False
+            
+        return True
+        
 
     def _print_log(self, msg):
         print(msg)
@@ -107,8 +133,10 @@ class Subtitles:
         data = {
             "file_id": file_id
         }
-
+        
         response = requests.post(SubtitlesConstants.DL_URL, headers=self.header, json=data)
+        # raise exceptions for both GET/POST requests:
+        response.raise_for_status()
         response_json = json.loads(response.content)
         dl_url = response_json.get("link")
         response = requests.get(dl_url)
@@ -151,15 +179,17 @@ class Subtitles:
         self._print_log(search_query)
         try:
             response = requests.get(search_query, headers=self.header)
-            print(f"response zaken = {response}")
+            response.raise_for_status()
             json_content = json.loads(response.content)
         except requests.exceptions.MissingSchema as e:
             raise requests.exceptions.MissingSchema(e)
         except requests.exceptions.InvalidSchema as e:
             raise requests.exceptions.InvalidSchema(e)
+        except requests.exceptions.HTTPError as e:
+            raise requests.exceptions.HTTPError(e)        
         except json.decoder.JSONDecodeError as e:
             raise json.decoder.JSONDecodeError(e)
-
+        
         movie_attrs = [resolution, quality, codec, group]
         self._print_log(f"Check all attrs: {movie_attrs}")
         most_matches = 0
@@ -186,9 +216,9 @@ class Subtitles:
 
         if not mm_file_id:
             raise SubtitlesNotFoundException(f"Couldn't find subtitles for the movie: {title}")
+        
         self._print_log(f"Found subtitles! will return {movie_attr.get('files')[0].get('file_name')}")
         return mm_file_id
-
 
 class SubtitlesNotFoundException(FileNotFoundError):
     """Custom Exception"""
